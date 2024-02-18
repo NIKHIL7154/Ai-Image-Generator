@@ -1,0 +1,39 @@
+.textarea{
+   height: 30px;
+   overflow-y: scroll;
+   resize: both;
+   width: 256px;
+   max-height: 150px;
+   padding-top: 2px;
+   border-radius: 20px;
+   -webkit-border-radius: 20px;
+   -moz-border-radius: 20px;
+   -ms-border-radius: 20px;
+   -o-border-radius: 20px;
+}
+ .textarea:focus{
+   outline: none;
+ }
+ .textarea::-webkit-scrollbar{
+   width: 0;
+ }
+ 
+.heading{
+  background: linear-gradient(         150deg,         #ffffff 20%,         #d2d2d2 30%,         #ffffff 70%,         #000000 80%  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+  background-size: 500% auto;
+  animation: textShine s ease-in-8out infinite alternate;
+  -webkit-animation: textShine 8s ease-in-out infinite alternate;
+}
+@keyframes textShine {
+   0% {
+       background-position: 0% 50%;
+   }
+   100% {
+       background-position: 100% 50%;
+   }
+}
+
