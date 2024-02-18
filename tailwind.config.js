@@ -9,4 +9,3 @@ export default {
   },
   plugins: [],
 }
-// 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

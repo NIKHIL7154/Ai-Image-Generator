@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { Mycontext } from './Mycontext'
 import { gsap } from 'gsap'
 import earth from './assets/earthrotate.gif'
 import waiting from './assets/waiting.gif'
@@ -9,8 +8,7 @@ import './components/App.css'
 function App() {
     const promptText = useRef()
     const [imgurl, setimgurl] = useState('https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg')
-    const secret = import.meta.env.VITE_META_DATA
-
+    const secretkey = import.meta.env.VITE_META_DATA
     const [apirunning, setapirunning] = useState(false)
 
     useEffect(() => {
@@ -61,7 +59,7 @@ function App() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "Bearer "+secret,
+                    Authorization: "Bearer "+secretkey,
                     "User-Agent": "Chrome",
                 },
                 body: JSON.stringify({
@@ -71,39 +69,39 @@ function App() {
                     size: "512x512"
                 }),
             }
-        ).then(response =>{
-            if(!response.ok){
+        ).then(async response => {
+            const data = await response.json()
+            if (!response.ok) {
                 throw new Error('Error at backend')
             }
-            return response.json();
-        }).then(data=>{
-            console.log(data)
+            return data
+        }).then(data => {
             setimgurl(data.data[0].url)
             setapirunning(false)
         }).catch(error => {
-            promptText.current.value='Cannot process this prompt..'
+            promptText.current.value = 'Cannot process this prompt..'
             setapirunning(false)
             console.log(error)
             setimgurl(baderror)
         })
     }
     return (
-        <Mycontext.Provider value={apirunning}>
-            <div className='overflow-hidden h-[100vh] w-[100vw] bg-[#1d024f] flex flex-col justify-center items-center'>
-                <div id='maindiv' className='rounded-2xl overflow-hidden py-[20px] h-auto w-[350px] md:w-[500px] bg-[#ffffff81] flex flex-col items-center'>
-                    <div className='headdivv'>
-                        <p className='text-center heading pb-[15px] text-4xl font-bold'>A.I IMAGE GENERATOR</p>
-                    </div>
-                    <img id='imagetag' className='rounded-xl w-[256px] h-[256px]' src={imgurl} alt="" />
-                    <textarea ref={promptText} className='textarea mt-[30px] px-4' placeholder='Enter prompt here' ></textarea>
-                    <div id='buttondiv' onClick={handleGenerate} className='overflow-hidden flex cursor-pointer justify-center items-center mt-5 bg-[#b885fe] text-white rounded-2xl w-[200px] h-[50px]'>
-                        <p id='clickto'>Click To Generate</p>
-                        <img className='earthclass w-[40px] h-[40px] hidden' src={earth} alt="" />
-                    </div>
+
+        <div className='overflow-hidden h-[100vh] w-[100vw] bg-[#1d024f] flex flex-col justify-center items-center'>
+            <div id='maindiv' className='rounded-2xl overflow-hidden py-[20px] h-auto w-[350px] md:w-[500px] bg-[#ffffff81] flex flex-col items-center'>
+                <div className='headdivv'>
+                    <p className='text-center heading pb-[15px] text-4xl font-bold'>A.I IMAGE GENERATOR</p>
+                </div>
+                <img id='imagetag' className='rounded-xl w-[256px] h-[256px]' src={imgurl} alt="" />
+                <textarea ref={promptText} className='textarea mt-[30px] px-4' placeholder='Enter prompt here' ></textarea>
+                <div id='buttondiv' onClick={handleGenerate} className='overflow-hidden flex cursor-pointer justify-center items-center mt-5 bg-[#b885fe] text-white rounded-2xl w-[200px] h-[50px]'>
+                    <p id='clickto'>Click To Generate</p>
+                    <img className='earthclass w-[40px] h-[40px] hidden' src={earth} alt="" />
                 </div>
             </div>
+        </div>
 
-        </Mycontext.Provider>
+
 
     )
 }
